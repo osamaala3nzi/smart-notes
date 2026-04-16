@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Smart Notes</title>
+
+    <style>
+        body {
+            font-family: Arial;
+            background: #0f172a;
+            color: white;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            margin-top: 40px;
+            font-size: 40px;
+        }
+
+        form {
+            margin: 20px;
+        }
+
+        input {
+            padding: 10px;
+            width: 250px;
+            border-radius: 8px;
+            border: none;
+            outline: none;
+        }
+
+        button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 8px;
+            background: #22c55e;
+            color: white;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+
+        button:hover {
+            background: #16a34a;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        li {
+            background: #1e293b;
+            margin: 10px auto;
+            padding: 15px;
+            width: 300px;
+            border-radius: 10px;
+        }
+
+        a {
+            color: #ef4444;
+            margin-left: 10px;
+            text-decoration: none;
+        }
+
+        .category {
+            font-size: 12px;
+            color: #94a3b8;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>🧠 Smart Notes</h1>
+
+    <form action="/add" method="post">
+        <input type="text" name="content" placeholder="Write a note..." required>
+        <button>Add</button>
+    </form>
+
+    <ul>
+        {% for note in notes %}
+        <li>
+            {{ note[1] }}  
+            <div class="category">{{ note[2] }}</div>
+            <a href="/delete/{{ note[0] }}">Delete</a>
+        </li>
+        {% endfor %}
+    </ul>
+
+</body>
+</html>
+
+<script>
+document.getElementById("noteForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let content = document.getElementById("content").value;
+
+    fetch("/add", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: "content=" + content
+    }).then(() => {
+        location.reload(); 
+    });
+});
+</script>
